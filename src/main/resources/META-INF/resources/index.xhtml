@@ -68,15 +68,15 @@
                                                 update="formulario-modal:ventana-cliente"
                                                 process="@this" style="margin-right: 5rem"
                                                 oncomplete="PF('ventanaModalCliente').show()">
-                                <f:setPropertyActionListener value="{cliente}"
-                                                target="({indexController.clienteSeleccionado})"/>
+                                <f:setPropertyActionListener value="#{cliente}"
+                                                target="#{indexController.clienteSeleccionado}"/>
                                 <p:resetInput target=":formulario-modal:ventana-cliente"/>
                             </p:commandButton>
                             <p:commandButton value="Eliminar" icon="pi pi-trash "
                                              class="ui-button-danger" process="@this"
                                             oncomplete="PF('ventanaEliminarCliente').show()">
                                 <f:setPropertyActionListener
-                                            value="{cliente}"
+                                            value="#{cliente}"
                                             target="#{indexController.clienteSeleccionado}"/>
                             </p:commandButton>
                         </p:column>
@@ -109,7 +109,7 @@
                         <p:inputText id="genero" value="#{indexController.clienteSeleccionado.genero}" />
                     </div><div class="field">
                         <p:outputLabel for="edad">EDAD</p:outputLabel>
-                        <p:inputText id="edad" value="#{indexController.clienteSeleccionado.edad} "/>
+                        <p:inputText id="edad" value="#{indexController.clienteSeleccionado.edad}"/>
                     </div>
                     </p:outputPanel>
                     <f:facet name="footer">
@@ -125,7 +125,7 @@
                 </p:dialog>
                 <p:confirmDialog widgetVar="ventanaEliminarCliente" showEffect="fade"
                                     width="300" mesagge="Desea eliminar el CLiente?"
-                                    header="Confirme su Selección" severity="warn">
+                                    header="Confirme su Selcción" severity="warn">
                     <p:commandButton value="Si" icon="pi pi-chek" style="ui-button-primary"
                                         process="@this"
                                         actionListener="#{indexController.eliminarCliente}"
