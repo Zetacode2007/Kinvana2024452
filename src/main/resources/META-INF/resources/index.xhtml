@@ -24,7 +24,7 @@
                         <p:menuitem value="Nuevo cliente" icon="pi -pi-fw pi-plus"
                                     actionListener="#{indexController.agregarCliente}"
                                     update=":formulario-modal:ventana-cliente"
-                                    oncomplete="PF('ventanaModalCliente').show"/>
+                                    oncomplete="PF('ventanaModalCliente').show()"/>
                     </p:menubar>
                 </div>
 
@@ -63,9 +63,21 @@
                             <h:outputText value="#{cliente.edad}"/>
                         </p:column>
                         <p:column headerText="OPCION">
-                            <p:commandButton value="Editar" icon="pi pi-pencil" class="ui-button-primary">
+                            <p:commandButton value="Editar" icon="pi pi-pencil"
+                                             class="ui-button-primary"
+                                                update="formulario-modal:ventana-cliente"
+                                                process="@this" style="margin-right: 5rem"
+                                                oncomplete="PF('ventanaModalCliente').show()">
+                                <f:setPropertyActionListener value="{cliente}"
+                                                target="({indexController.clienteSeleccionado})"/>
+                                <p:resetInput target=":formulario-modal:ventana-cliente"/>
                             </p:commandButton>
-                            <p:commandButton value="Eliminar" icon="pi pi-trash " class="ui-button-danger">
+                            <p:commandButton value="Eliminar" icon="pi pi-trash "
+                                             class="ui-button-danger" process="@this"
+                                            oncomplete="PF('ventanaEliminarCliente').show()">
+                                <f:setPropertyActionListener
+                                            value="{cliente}"
+                                            target="#{indexController.clienteSeleccionado}"/>
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
@@ -78,34 +90,50 @@
                     <p:outputPanel id="ventana-cliente" class="ui-fluid">
                         <div class="field">
                             <p:outputLabel for="nombre">NOMBRE</p:outputLabel>
-                            <p:inputText id="nombre" required="true" />
+                            <p:inputText id="nombre" required="true"
+                                        value="#{indexController.clienteSeleccionado.nombre}"/>
                         </div>
                         <div class="field">
                             <p:outputLabel for="apellido">APELLIDO</p:outputLabel>
-                            <p:inputText id="apellido" />
+                            <p:inputText id="apellido" value="#{indexController.clienteSeleccionado.apellido}"/>
                         </div>
                         <div class="field">
                             <p:outputLabel for="telefono">TELEFONO</p:outputLabel>
-                            <p:inputText id="telefono" />
+                            <p:inputText id="telefono" value="#{indexController.clienteSeleccionado.telefono}"/>
                         </div><div class="field">
                         <p:outputLabel for="correo">CORREO</p:outputLabel>
-                        <p:inputText id="correo" required="true" />
+                        <p:inputText id="correo" required="true"
+                                     value="#{indexController.clienteSeleccionado.correo}"/>
                     </div><div class="field">
                         <p:outputLabel for="genero">GENERO</p:outputLabel>
-                        <p:inputText id="genero" />
+                        <p:inputText id="genero" value="#{indexController.clienteSeleccionado.genero}" />
                     </div><div class="field">
                         <p:outputLabel for="edad">EDAD</p:outputLabel>
-                        <p:inputText id="edad" />
+                        <p:inputText id="edad" value="#{indexController.clienteSeleccionado.edad} "/>
                     </div>
-
                     </p:outputPanel>
                     <f:facet name="footer">
-                        <p:commandButton value="Guardar" icon="pi pi-chek" clas="ui-button-primary"/>
-                        <p:commandButton value="Cancelar" icon="pi pi-times" clas="ui-button-secondary" onClick="PF('ventanaModalCliente').hide()" type="button"/>
+                        <p:commandButton value="Guardar" icon="pi pi-chek"
+                                         class="ui-button-primary"
+                                            process="ventana-cliente @this"
+                                            actionListener="#{indexController.guardarCliente}"/>
+
+                        <p:commandButton value="Cancelar" icon="pi pi-times" class="ui-button-secondary"
+                                         onclick="PF('ventanaModalCliente').hide()" type="button"/>
 
                     </f:facet>
                 </p:dialog>
-
+                <p:confirmDialog widgetVar="ventanaEliminarCliente" showEffect="fade"
+                                    width="300" mesagge="Desea eliminar el CLiente?"
+                                    header="Confirme su Selección" severity="warn">
+                    <p:commandButton value="Si" icon="pi pi-chek" style="ui-button-primary"
+                                        process="@this"
+                                        actionListener="#{indexController.eliminarCliente}"
+                                        oncomplete="PF('ventanaEliminarCliente').hide()"/>
+                    <p:commandButton value="No" icon="pi pi-times" style="ui-button-warning"
+                                        onclick="PF('ventanaEliminarCliente').hide()"
+                                        type="button"/>
+                </p:confirmDialog>
             </h:form>
 
         </div>
